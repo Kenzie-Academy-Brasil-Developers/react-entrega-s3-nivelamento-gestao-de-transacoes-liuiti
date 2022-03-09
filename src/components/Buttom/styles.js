@@ -11,6 +11,7 @@ export const ButtomContainer = styled.button`
   width: 220px;
 
   :hover {
-    border: 2px solid gray.400;
+    border: 2px solid ${(props) => props.hoverColor};
+    background: ${(props) => props.hoverColor};
   }
 `;

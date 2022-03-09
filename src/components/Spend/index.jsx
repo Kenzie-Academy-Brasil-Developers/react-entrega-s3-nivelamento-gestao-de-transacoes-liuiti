@@ -2,11 +2,15 @@ import { ContainerSpending } from "./styles";
 import List from "../List";
 import Sum from "../Sum";
 
-const Spend = ({ transactions }) => {
+const Spend = ({ transactions, setNewTransactions, setTransactions }) => {
   return (
     <ContainerSpending>
       <span>Saída</span>
-      <List transactions={transactions} />
+      <List
+        transactions={transactions}
+        setNewTransactions={setNewTransactions}
+        setTransactions={setTransactions}
+      />
       <Sum newTransactions={transactions} />
     </ContainerSpending>
   );

@@ -11,25 +11,28 @@ import {
 } from "./styles";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import List from "../List";
 import Spend from "../Spend";
 import Entrance from "../Entrance";
 import Sum from "../Sum";
+import AllMovesList from "../AllMovesList";
 
 const Form = () => {
   const schema = yup.object().shape({
-    name: yup
-      .string()
-      .required("Nome obrigatório")
-      .min(3, "Mínimo de 3 letras"),
+    name: yup.string().required("Nome obrigatório"),
     quantity: yup
       .number()
-      .typeError("A quantidade precisa ser número")
-      .required("Quantidade obrigatória"),
+      .transform((value, originalValue) => {
+        return originalValue === "" ? undefined : value;
+      })
+      .required("Quantidade obrigatória")
+      .typeError("A quantidade precisa ser número"),
     price: yup
       .number()
-      .typeError("O preço precisa ser número")
-      .required("Preço obrigatório"),
+      .transform((value, originalValue) => {
+        return originalValue === "" ? undefined : value;
+      })
+      .required("Preço obrigatório")
+      .typeError("O preço precisa ser número"),
   });
 
   const {
@@ -41,26 +44,24 @@ const Form = () => {
   });
 
   const handleForm = (data) => {
+    setInputName("");
+    setInputQuantity("");
+    setInputPrice("");
     setTransactions([...transactions, data]);
-    data.quantity > 0 && setNewTransactions([...newTransactions, data]);
+    data.quantity > 0
+      ? setEntrance([...entrance, data])
+      : setSpending([...spending, data]);
   };
 
   const [transactions, setTransactions] = useState([]);
-
-  const [newTransactions, setNewTransactions] = useState([]);
+  const [entrance, setEntrance] = useState([]);
+  const [spending, setSpending] = useState([]);
   const [isOn, setIsOn] = useState(false);
+  const [inputName, setInputName] = useState("");
+  const [inputQuantity, setInputQuantity] = useState("");
+  const [inputPrice, setInputPrice] = useState("");
 
-  const filterEntrance = () => {
-    setNewTransactions(
-      transactions.filter((transaction) => transaction.quantity > 0)
-    );
-    setIsOn(!isOn);
-  };
-
-  const filterSpending = () => {
-    setNewTransactions(
-      transactions.filter((transaction) => transaction.quantity < 0)
-    );
+  const buttonTransition = () => {
     setIsOn(!isOn);
   };
 
@@ -73,6 +74,8 @@ const Form = () => {
           label="Nome"
           placeholder="Digite o nome da fruta"
           error={errors.name?.message}
+          value={inputName}
+          onChange={(e) => setInputName(e.target.value)}
         />
         <Input
           name="quantity"
@@ -80,6 +83,8 @@ const Form = () => {
           label="Quantidade"
           placeholder="Digite a quantidade"
           error={errors.quantity?.message}
+          value={inputQuantity}
+          onChange={(e) => setInputQuantity(e.target.value)}
         />
         <Input
           name="price"
@@ -87,8 +92,10 @@ const Form = () => {
           label={"Preço"}
           placeholder="Digite o valor"
           error={errors.price?.message}
+          value={inputPrice}
+          onChange={(e) => setInputPrice(e.target.value)}
         />
-        <Button type="submit" backgroundColor="#FFE4C4">
+        <Button type="submit" hoverColor="#e9a449" backgroundColor="#FFE4C4">
           Enviar
         </Button>
       </FormContainer>
@@ -99,27 +106,67 @@ const Form = () => {
               <Button
                 type="button"
                 backgroundColor="#FA8072"
-                onClick={() => filterSpending()}
+                hoverColor="#cc0000"
+                onClick={() => buttonTransition()}
               >
                 Saída
               </Button>
-              <Entrance transactions={newTransactions} />
+              <Entrance
+                transactions={entrance}
+                setNewTransactions={setEntrance}
+                setTransactions={setTransactions}
+              />
             </>
           ) : (
             <>
               <Button
                 type="button"
                 backgroundColor="#1cb01c"
-                onClick={() => filterEntrance()}
+                hoverColor="#568f56"
+                onClick={() => buttonTransition()}
               >
                 Entrada
               </Button>
-              <Spend transactions={newTransactions} />
+              <Spend
+                transactions={spending}
+                setNewTransactions={setSpending}
+                setTransactions={setTransactions}
+              />
             </>
           )}
         </FilterMovements>
         <AllMovements>
-          <List transactions={transactions} />
+          {!isOn ? (
+            <Button
+              type="button"
+              backgroundColor="#dcdcdc"
+              hoverColor="#b3b3b3"
+              onClick={() =>
+                setEntrance(
+                  transactions.filter((transaction) => transaction.quantity > 0)
+                )
+              }
+            >
+              Atualizar
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              backgroundColor="#dcdcdc"
+              hoverColor="#b3b3b3"
+              onClick={() =>
+                setSpending(
+                  transactions.filter((transaction) => transaction.quantity < 0)
+                )
+              }
+            >
+              Atualizar
+            </Button>
+          )}
+          <AllMovesList
+            transactions={transactions}
+            setTransactions={setTransactions}
+          />
           <Sum newTransactions={transactions} />
         </AllMovements>
       </ContainerMovement>

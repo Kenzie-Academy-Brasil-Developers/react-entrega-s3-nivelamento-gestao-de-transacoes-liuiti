@@ -60,10 +60,6 @@ export const AllMovements = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
-  @media (min-width: 1200px) {
-    margin-top: 13vh;
-  }
 `;
 
 export const FilterMovements = styled.section`

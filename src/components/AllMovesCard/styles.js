@@ -23,6 +23,7 @@ export const CardInfo = styled.div`
   > div {
     display: flex;
   }
+
   button {
     border: none;
     margin-right: 10px;

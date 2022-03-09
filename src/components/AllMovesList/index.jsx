@@ -1,18 +1,18 @@
-import Card from "../Card";
+import AllMovesCard from "../AllMovesCard";
 import { ContainerList, ContainerTransactions, BoxNoMove } from "./styles";
 
-const List = ({ transactions, setNewTransactions, setTransactions }) => {
+const AllMovesList = ({ transactions, setTransactions }) => {
   return (
     <ContainerList>
+      <strong>Total</strong>
       <span>Movimentações</span>
       <ContainerTransactions>
         {transactions.length > 0 ? (
           transactions.map((transaction, index) => (
-            <Card
+            <AllMovesCard
               key={index}
               transaction={transaction}
               transactions={transactions}
-              setNewTransactions={setNewTransactions}
               setTransactions={setTransactions}
               index={index}
             />
@@ -27,4 +27,4 @@ const List = ({ transactions, setNewTransactions, setTransactions }) => {
   );
 };
 
-export default List;
+export default AllMovesList;

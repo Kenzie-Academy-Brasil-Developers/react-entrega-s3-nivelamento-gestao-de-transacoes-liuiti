@@ -18,7 +18,7 @@ export const InputValidation = styled.div`
   width: 100%;
   border: 1.5px solid white;
   :focus-within {
-    border: 1.11px solid #666360;
+    border: 1.5px solid #666360;
   }
   ${(props) =>
     props.isErrored &&

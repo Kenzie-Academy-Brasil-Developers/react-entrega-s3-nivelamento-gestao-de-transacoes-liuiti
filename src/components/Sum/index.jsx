@@ -15,7 +15,7 @@ const Sum = ({ newTransactions }) => {
         <span>
           {newTransactions
             .reduce((acc, item) => {
-              return acc + item.price;
+              return acc + item.price * item.quantity;
             }, 0)
             .toLocaleString("pt-br", { style: "currency", currency: "BRL" })}
         </span>

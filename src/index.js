@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Management from "./Management";
+import App from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Management />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

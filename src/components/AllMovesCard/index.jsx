@@ -1,12 +1,17 @@
 import { CardInfo } from "./styles";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-const Card = ({ transaction, transactions, setNewTransactions, index }) => {
+const AllMovesCard = ({
+  transaction,
+  transactions,
+  setTransactions,
+  index,
+}) => {
   const cardRemove = () => {
     const filterCards = transactions.filter(
       (element, primaryIndex) => index !== primaryIndex
     );
-    setNewTransactions(filterCards);
+    setTransactions(filterCards);
   };
 
   return (
@@ -25,4 +30,4 @@ const Card = ({ transaction, transactions, setNewTransactions, index }) => {
   );
 };
 
-export default Card;
+export default AllMovesCard;
